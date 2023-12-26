@@ -172,7 +172,7 @@ def main():
     points = []
 
     file_path = args.file[0]
-    route_id = args.file[1] if len(args.file) > 1 else 0
+    route_id = args.file[1] if len(args.file) > 1 else "0"
 
     # Get the data already at the file
     points, distance = get_saved_data(file_path, route_id, world, grp)
