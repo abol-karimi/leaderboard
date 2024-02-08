@@ -110,8 +110,13 @@ class SpeedometerReader(BaseReader):
     def __call__(self):
         """ We convert the vehicle physics information into a convenient dictionary """
 
+        if not self._vehicle.is_alive:
+            raise SensorReceivedNoData('Speedometer called on a destroyed actor!')
+
         # protect this access against timeout
         attempts = 0
+        velocity = None
+        transform = None
         while attempts < self.MAX_CONNECTION_ATTEMPTS:
             try:
                 velocity = self._vehicle.get_velocity()
@@ -121,6 +126,9 @@ class SpeedometerReader(BaseReader):
                 attempts += 1
                 time.sleep(0.2)
                 continue
+        
+        if velocity is None or transform is None:
+            raise SensorReceivedNoData(f'Speedometer failed after {attempts} attempts!')
 
         return {'speed': self._get_forward_speed(transform=transform, velocity=velocity)}
 
