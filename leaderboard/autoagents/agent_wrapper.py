@@ -249,8 +249,8 @@ class AgentWrapper(object):
         """
         Remove and destroy all sensors
         """
-        for i, _ in enumerate(self._sensors_list):
-            if self._sensors_list[i] is not None:
+        for i in range(len(self._sensors_list)):
+            if not self._sensors_list[i] is None:
                 self._sensors_list[i].stop()
                 self._sensors_list[i].destroy()
                 self._sensors_list[i] = None
